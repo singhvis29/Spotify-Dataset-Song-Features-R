@@ -182,10 +182,18 @@ $(document).ready(function () {
 <h4>Loading Data</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3BvdGlmeS5kZi5mdWxsID0gcmVhZC5jc3YoXCJkYXRhL1Nwb3RpZnlGZWF0dXJlcy5jc3ZcIilcblxuYGBgIn0= -->
-<pre class="r"><code>spotify.df.full = read.csv(&quot;data/SpotifyFeatures.csv&quot;)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGRwbHlyKVxubGlicmFyeShrbml0cilcbmxpYnJhcnkoa2FibGVFeHRyYSlcbmxpYnJhcnkobWx0b29scylcbmxpYnJhcnkoZ2dwbG90MilcbiBgYGBcbmBgYCJ9 -->
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(mltools)
+library(ggplot2)
+ ```</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IGF0dGVtcHQgdG8gdXNlIHplcm8tbGVuZ3RoIHZhcmlhYmxlIG5hbWVcbiJ9 -->
+<pre><code>Error: attempt to use zero-length variable name</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -193,16 +201,34 @@ $(document).ready(function () {
 <h4>Basic EDA</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoXCJEaW1lbnNpb25cIilcbnByaW50KGRpbShzcG90aWZ5LmRmLmZ1bGwpKVxuXG4jIFJlbmFtaW5nIGdlbnJlIGNvbHVtblxuY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKVtjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpID09IFwiw68uLmdlbnJlXCJdIDwtIFwiZ2VucmVcIlxuXG5wcmludChcIkNvbHVtbnNcIilcbnByaW50KGNvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbCkpXG5gYGAifQ== -->
-<pre class="r"><code>print(&quot;Dimension&quot;)
-print(dim(spotify.df.full))
-
-# Renaming genre column
-colnames(spotify.df.full)[colnames(spotify.df.full) == &quot;ï..genre&quot;] &lt;- &quot;genre&quot;
-
-print(&quot;Columns&quot;)
-print(colnames(spotify.df.full))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoXCJEaW1lbnNpb25cIilcbmBgYCJ9 -->
+<pre class="r"><code>print(&quot;Dimension&quot;)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRGltZW5zaW9uXCJcbiJ9 -->
+<pre><code>[1] &quot;Dimension&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoZGltKHNwb3RpZnkuZGYuZnVsbCkpXG5gYGAifQ== -->
+<pre class="r"><code>print(dim(spotify.df.full))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIzMjcyNSAgICAgMThcbiJ9 -->
+<pre><code>[1] 232725     18</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZW5hbWluZyBnZW5yZSBjb2x1bW5cbmNvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbClbY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKSA9PSBcIsOvLi5nZW5yZVwiXSA8LSBcImdlbnJlXCJcbnByaW50KFwiQ29sdW1uc1wiKVxuYGBgIn0= -->
+<pre class="r"><code># Renaming genre column
+colnames(spotify.df.full)[colnames(spotify.df.full) == &quot;ï..genre&quot;] &lt;- &quot;genre&quot;
+print(&quot;Columns&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQ29sdW1uc1wiXG4ifQ== -->
+<pre><code>[1] &quot;Columns&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKSlcbmBgYCJ9 -->
+<pre class="r"><code>print(colnames(spotify.df.full))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImdlbnJlXCIgICAgICAgICAgICBcImFydGlzdF9uYW1lXCIgICAgICBcInRyYWNrX25hbWVcIiAgICAgICBcInRyYWNrX2lkXCIgICAgICAgICBcInBvcHVsYXJpdHlcIiAgICAgICBcImFjb3VzdGljbmVzc1wiICAgIFxuIFs3XSBcImRhbmNlYWJpbGl0eVwiICAgICBcImR1cmF0aW9uX21zXCIgICAgICBcImVuZXJneVwiICAgICAgICAgICBcImluc3RydW1lbnRhbG5lc3NcIiBcImtleVwiICAgICAgICAgICAgICBcImxpdmVuZXNzXCIgICAgICAgIFxuWzEzXSBcImxvdWRuZXNzXCIgICAgICAgICBcIm1vZGVcIiAgICAgICAgICAgICBcInNwZWVjaGluZXNzXCIgICAgICBcInRlbXBvXCIgICAgICAgICAgICBcInRpbWVfc2lnbmF0dXJlXCIgICBcInZhbGVuY2VcIiAgICAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;genre&quot;            &quot;artist_name&quot;      &quot;track_name&quot;       &quot;track_id&quot;         &quot;popularity&quot;       &quot;acousticness&quot;    
+ [7] &quot;danceability&quot;     &quot;duration_ms&quot;      &quot;energy&quot;           &quot;instrumentalness&quot; &quot;key&quot;              &quot;liveness&quot;        
+[13] &quot;loudness&quot;         &quot;mode&quot;             &quot;speechiness&quot;      &quot;tempo&quot;            &quot;time_signature&quot;   &quot;valence&quot;         </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -210,27 +236,48 @@ print(colnames(spotify.df.full))</code></pre>
 <h4>Summary</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShzcG90aWZ5LmRmLmZ1bGwpXG5gYGAifQ== -->
-<pre class="r"><code>summary(spotify.df.full)</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Dependent Variable: popularity Continouos Variables: Valence, Tempo, Speechiness, Loudness, Liveness, Intrumentalness, Energy, Duration, Dancibility, Acousticness (10) Categorical Variables: Time Signature, Mode, Key, Genre (10) Unique Identifier: Track ID Other Variables:Artist Name, Track Name</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDYXRlZ29yaWNhbCBhbmQgQ29udGludW91cyB2YXJpYWJsZXMgbGlzdFxuY2F0ZWdvcmljYWwudmFycyA9IGMoXCJ0aW1lX3NpZ25hdHVyZVwiLCBcIm1vZGVcIiwgXCJrZXlcIiwgXCJnZW5yZVwiKVxucHJpbnQoY2F0ZWdvcmljYWwudmFycylcbnVuaXF1ZS5pZGVudGlmaWVyID0gYyhcInRyYWNrX2lkXCIpXG5wcmludCh1bmlxdWUuaWRlbnRpZmllcilcbm90aGVyLnZhcnMgPSBjKFwidHJhY2tfbmFtZVwiLCBcImFydGlzdF9uYW1lXCIpXG5wcmludChvdGhlci52YXJzKVxuZGVwZW5kZW50LnZhciA9IGMoXCJwb3B1bGFyaXR5XCIpXG5wcmludChkZXBlbmRlbnQudmFyKVxuY29udGludW91cy52YXJzID0gYyhcInZhbGVuY2VcIiwgXCJ0ZW1wb1wiLCBcInNwZWVjaGluZXNzXCIsIFwibG91ZG5lc3NcIiwgXCJsaXZlbmVzc1wiLCBcImluc3RydW1lbnRhbG5lc3NcIiwgXCJlbmVyZ3lcIiwgXCJkdXJhdGlvblwiLCBcImRhbmNpYmlsaXR5XCIsIFwiYWNvdXN0aWNuZXNzXCIpXG5wcmludChjb250aW51b3VzLnZhcnMpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDYXRlZ29yaWNhbCBhbmQgQ29udGludW91cyB2YXJpYWJsZXMgbGlzdFxuY2F0ZWdvcmljYWwudmFycyA9IGMoXCJ0aW1lX3NpZ25hdHVyZVwiLCBcIm1vZGVcIiwgXCJrZXlcIiwgXCJnZW5yZVwiKVxucHJpbnQoY2F0ZWdvcmljYWwudmFycylcbmBgYCJ9 -->
 <pre class="r"><code># Categorical and Continuous variables list
 categorical.vars = c(&quot;time_signature&quot;, &quot;mode&quot;, &quot;key&quot;, &quot;genre&quot;)
-print(categorical.vars)
-unique.identifier = c(&quot;track_id&quot;)
-print(unique.identifier)
-other.vars = c(&quot;track_name&quot;, &quot;artist_name&quot;)
-print(other.vars)
-dependent.var = c(&quot;popularity&quot;)
-print(dependent.var)
-continuous.vars = c(&quot;valence&quot;, &quot;tempo&quot;, &quot;speechiness&quot;, &quot;loudness&quot;, &quot;liveness&quot;, &quot;instrumentalness&quot;, &quot;energy&quot;, &quot;duration&quot;, &quot;dancibility&quot;, &quot;acousticness&quot;)
+print(categorical.vars)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwidGltZV9zaWduYXR1cmVcIiBcIm1vZGVcIiAgICAgICAgICAgXCJrZXlcIiAgICAgICAgICAgIFwiZ2VucmVcIiAgICAgICAgIFxuIn0= -->
+<pre><code>[1] &quot;time_signature&quot; &quot;mode&quot;           &quot;key&quot;            &quot;genre&quot;         </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudW5pcXVlLmlkZW50aWZpZXIgPSBjKFwidHJhY2tfaWRcIilcbnByaW50KHVuaXF1ZS5pZGVudGlmaWVyKVxuYGBgIn0= -->
+<pre class="r"><code>unique.identifier = c(&quot;track_id&quot;)
+print(unique.identifier)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwidHJhY2tfaWRcIlxuIn0= -->
+<pre><code>[1] &quot;track_id&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub3RoZXIudmFycyA9IGMoXCJ0cmFja19uYW1lXCIsIFwiYXJ0aXN0X25hbWVcIilcbnByaW50KG90aGVyLnZhcnMpXG5gYGAifQ== -->
+<pre class="r"><code>other.vars = c(&quot;track_name&quot;, &quot;artist_name&quot;)
+print(other.vars)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwidHJhY2tfbmFtZVwiICBcImFydGlzdF9uYW1lXCJcbiJ9 -->
+<pre><code>[1] &quot;track_name&quot;  &quot;artist_name&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGVwZW5kZW50LnZhciA9IGMoXCJwb3B1bGFyaXR5XCIpXG5wcmludChkZXBlbmRlbnQudmFyKVxuYGBgIn0= -->
+<pre class="r"><code>dependent.var = c(&quot;popularity&quot;)
+print(dependent.var)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwicG9wdWxhcml0eVwiXG4ifQ== -->
+<pre><code>[1] &quot;popularity&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29udGludW91cy52YXJzID0gYyhcInZhbGVuY2VcIiwgXCJ0ZW1wb1wiLCBcInNwZWVjaGluZXNzXCIsIFwibG91ZG5lc3NcIiwgXCJsaXZlbmVzc1wiLCBcImluc3RydW1lbnRhbG5lc3NcIiwgXCJlbmVyZ3lcIiwgXCJkdXJhdGlvbl9tc1wiLCBcImRhbmNlYWJpbGl0eVwiLCBcImFjb3VzdGljbmVzc1wiKVxucHJpbnQoY29udGludW91cy52YXJzKVxuYGBgIn0= -->
+<pre class="r"><code>continuous.vars = c(&quot;valence&quot;, &quot;tempo&quot;, &quot;speechiness&quot;, &quot;loudness&quot;, &quot;liveness&quot;, &quot;instrumentalness&quot;, &quot;energy&quot;, &quot;duration_ms&quot;, &quot;danceability&quot;, &quot;acousticness&quot;)
 print(continuous.vars)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcInZhbGVuY2VcIiAgICAgICAgICBcInRlbXBvXCIgICAgICAgICAgICBcInNwZWVjaGluZXNzXCIgICAgICBcImxvdWRuZXNzXCIgICAgICAgICBcImxpdmVuZXNzXCIgICAgICAgICBcImluc3RydW1lbnRhbG5lc3NcIlxuIFs3XSBcImVuZXJneVwiICAgICAgICAgICBcImR1cmF0aW9uX21zXCIgICAgICBcImRhbmNlYWJpbGl0eVwiICAgICBcImFjb3VzdGljbmVzc1wiICAgIFxuIn0= -->
+<pre><code> [1] &quot;valence&quot;          &quot;tempo&quot;            &quot;speechiness&quot;      &quot;loudness&quot;         &quot;liveness&quot;         &quot;instrumentalness&quot;
+ [7] &quot;energy&quot;           &quot;duration_ms&quot;      &quot;danceability&quot;     &quot;acousticness&quot;    </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -321,9 +368,6 @@ print(continuous.vars)</code></pre>
 <h4>Checking number of missing values</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sU3Vtcyhpcy5uYShzcG90aWZ5LmRmLmZ1bGwpKVxuYGBgIn0= -->
-<pre class="r"><code>colSums(is.na(spotify.df.full))</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>No missing values in the dataset</p>
@@ -348,15 +392,63 @@ print(continuous.vars)</code></pre>
 </div>
 <div id="standardize-continuous-variables" class="section level4">
 <h4>Standardize Continuous variables</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29udC52YXJzID0gY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKVtjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpICVpbiUgY29udGludW91cy52YXJzXVxuc3BvdGlmeS5kZi5mdWxsLmNvbnQgPSBzcG90aWZ5LmRmLmZ1bGxbLCBjb250aW51b3VzLnZhcnNdXG5gYGAifQ== -->
+<pre class="r"><code>cont.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% continuous.vars]
+spotify.df.full.cont = spotify.df.full[, continuous.vars]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 <div id="one-hot-encoding" class="section level4">
 <h4>One-Hot Encoding</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0LnZhcnMgPSBjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpW2NvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbCkgJWluJSBjYXRlZ29yaWNhbC52YXJzXVxuc3BvdGlmeS5kZi5mdWxsLmNhdCA9IHNwb3RpZnkuZGYuZnVsbFssIGNhdC52YXJzXVxuc3BvdGlmeS5kZi5mdWxsLmNhdCA9IGRhdGEudGFibGUoc3BvdGlmeS5kZi5mdWxsLmNhdClcbnNwb3RpZnkuZGYuZnVsbC5jYXQub25laG90ID0gb25lX2hvdChzcG90aWZ5LmRmLmZ1bGwuY2F0LCBjb2xzID0gXCJhdXRvXCIpXG5gYGAifQ== -->
+<pre class="r"><code>cat.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% categorical.vars]
+spotify.df.full.cat = spotify.df.full[, cat.vars]
+spotify.df.full.cat = data.table(spotify.df.full.cat)
+spotify.df.full.cat.onehot = one_hot(spotify.df.full.cat, cols = &quot;auto&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="other-variables" class="section level4">
+<h4>Other Variables</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="final-dataset" class="section level4">
+<h4>Final Dataset</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoc3BvdGlmeS5maW5hbC5kZikgPSBjKFwidHJhY2tfaWRcIiwgY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsWzI6NTldKSwgXCJwb3B1bGFyaXR5XCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code>colnames(spotify.final.df) = c(&quot;track_id&quot;, colnames(spotify.df.full[2:59]), &quot;popularity&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gYFsuZGF0YS5mcmFtZWAoc3BvdGlmeS5kZi5mdWxsLCAyOjU5KSA6IFxuICB1bmRlZmluZWQgY29sdW1ucyBzZWxlY3RlZFxuIn0= -->
+<pre><code>Error in `[.data.frame`(spotify.df.full, 2:59) : 
+  undefined columns selected</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBXcml0ZSBkYXRhc2V0XG53cml0ZS5jc3Yoc3BvdGlmeS5maW5hbC5kZiwgXCJkYXRhL3Nwb3RpZnkuZGF0YXNldC5maW5hbC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code># Write dataset
+write.csv(spotify.final.df, &quot;data/spotify.dataset.final.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <hr />
 <p>To Do- 1. Missing Value Treatment 2. Outlier Treatment 3. Standardize continuous variables 4. One-hot encode categorical variables</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgUHJlcGFyYXRpb24gYW5kIENsZWFuaW5nIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRSwgZWNobz1GQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoa25pdHIpDQpsaWJyYXJ5KGthYmxlRXh0cmEpDQpgYGANCg0KDQojIyMjIExvYWRpbmcgRGF0YQ0KDQpgYGB7cn0NCnNwb3RpZnkuZGYuZnVsbCA9IHJlYWQuY3N2KCJkYXRhL1Nwb3RpZnlGZWF0dXJlcy5jc3YiKQ0KDQpgYGANCg0KIyMjIyBCYXNpYyBFREENCg0KYGBge3J9DQpwcmludCgiRGltZW5zaW9uIikNCnByaW50KGRpbShzcG90aWZ5LmRmLmZ1bGwpKQ0KDQojIFJlbmFtaW5nIGdlbnJlIGNvbHVtbg0KY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKVtjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpID09ICLDry4uZ2VucmUiXSA8LSAiZ2VucmUiDQoNCnByaW50KCJDb2x1bW5zIikNCnByaW50KGNvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbCkpDQpgYGANCg0KIyMjIyBTdW1tYXJ5IA0KDQpgYGB7cn0NCnN1bW1hcnkoc3BvdGlmeS5kZi5mdWxsKQ0KYGBgDQoNCkRlcGVuZGVudCBWYXJpYWJsZTogcG9wdWxhcml0eQ0KQ29udGlub3VvcyBWYXJpYWJsZXM6IFZhbGVuY2UsIFRlbXBvLCBTcGVlY2hpbmVzcywgTG91ZG5lc3MsIExpdmVuZXNzLCBJbnRydW1lbnRhbG5lc3MsIEVuZXJneSwgRHVyYXRpb24sIERhbmNpYmlsaXR5LCBBY291c3RpY25lc3MgKDEwKQ0KQ2F0ZWdvcmljYWwgVmFyaWFibGVzOiBUaW1lIFNpZ25hdHVyZSwgTW9kZSwgS2V5LCBHZW5yZSAoMTApDQpVbmlxdWUgSWRlbnRpZmllcjogVHJhY2sgSUQNCk90aGVyIFZhcmlhYmxlczpBcnRpc3QgTmFtZSwgVHJhY2sgTmFtZQ0KDQpgYGB7cn0NCiMgQ2F0ZWdvcmljYWwgYW5kIENvbnRpbnVvdXMgdmFyaWFibGVzIGxpc3QNCmNhdGVnb3JpY2FsLnZhcnMgPSBjKCJ0aW1lX3NpZ25hdHVyZSIsICJtb2RlIiwgImtleSIsICJnZW5yZSIpDQpwcmludChjYXRlZ29yaWNhbC52YXJzKQ0KdW5pcXVlLmlkZW50aWZpZXIgPSBjKCJ0cmFja19pZCIpDQpwcmludCh1bmlxdWUuaWRlbnRpZmllcikNCm90aGVyLnZhcnMgPSBjKCJ0cmFja19uYW1lIiwgImFydGlzdF9uYW1lIikNCnByaW50KG90aGVyLnZhcnMpDQpkZXBlbmRlbnQudmFyID0gYygicG9wdWxhcml0eSIpDQpwcmludChkZXBlbmRlbnQudmFyKQ0KY29udGludW91cy52YXJzID0gYygidmFsZW5jZSIsICJ0ZW1wbyIsICJzcGVlY2hpbmVzcyIsICJsb3VkbmVzcyIsICJsaXZlbmVzcyIsICJpbnN0cnVtZW50YWxuZXNzIiwgImVuZXJneSIsICJkdXJhdGlvbiIsICJkYW5jaWJpbGl0eSIsICJhY291c3RpY25lc3MiKQ0KcHJpbnQoY29udGludW91cy52YXJzKQ0KYGBgDQoNCg0KIyMjIyBEaXN0aW5jdCBWYWx1ZXMgZm9yIGNhdGVnb3JpY2FsIHZhcmlhYmxlcw0KDQpgYGB7cn0NCnByaW50KCJHZW5yZSIpDQpwcmludChsZW5ndGgodW5pcXVlKHNwb3RpZnkuZGYuZnVsbCRnZW5yZSkpKQ0KdGFibGUoc3BvdGlmeS5kZi5mdWxsJGdlbnJlKQ0KDQpwcmludCgiVGltZSBTaWduYXR1cmUiKQ0KdGFibGUoc3BvdGlmeS5kZi5mdWxsJHRpbWVfc2lnbmF0dXJlKQ0KDQpwcmludCgiTW9kZSIpDQp0YWJsZShzcG90aWZ5LmRmLmZ1bGwkbW9kZSkNCg0KcHJpbnQoIktleSIpDQpwcmludChsZW5ndGgodW5pcXVlKHNwb3RpZnkuZGYuZnVsbCRrZXkpKSkNCnRhYmxlKHNwb3RpZnkuZGYuZnVsbCRrZXkpDQpgYGANCg0KDQojIyMjIENoZWNraW5nIG51bWJlciBvZiBtaXNzaW5nIHZhbHVlcw0KYGBge3J9DQpjb2xTdW1zKGlzLm5hKHNwb3RpZnkuZGYuZnVsbCkpDQpgYGANCg0KTm8gbWlzc2luZyB2YWx1ZXMgaW4gdGhlIGRhdGFzZXQNCg0KIyMjIyBPdXRsaWVyIFRyZWF0bWVudA0KDQpgYGB7ciBlY2hvPUZBTFNFfQ0KIyBDaGVja2luZyBudW1iZXIgb2Ygb3V0bGllcnMgZm9yIGNvbnRpbnVvdXMgdmFyaWFibGVzDQpvdXRsaWVycyA9IHZlY3RvcigpDQpmb3IgKGMgaW4gY29udGludW91cy52YXJzKSB7DQogIG8gPSBsZW5ndGgoYm94cGxvdChzcG90aWZ5LmRmLmZ1bGwkYywgcGxvdCA9IEZBTFNFKSRvdXQpDQogIG91dGxpZXJzID0gYyhvdXRsaWVycywgbykNCn0NCg0Kb3V0bGllci5kZiA9IGRhdGEuZnJhbWUoDQogIGNvbHVtbi5uYW1lID0gY29udGludW91cy52YXJzLA0KICBuby5vZi5vdXRsaWVycyA9IG91dGxpZXJzDQopDQoNCnByaW50KG91dGxpZXIuZGYpDQoNCmBgYA0KDQpUaGVyZWZvcmUsIG91dGxpZXIgdHJlYW1lbnQgaXMgbm90IG5lZWRlZCBhcyBudW1iZXIgb2Ygb3V0bGllcnMgaXMgMCBmb3IgYWxsIHRoZSBjb250aW51b3VzIHZhcmlhYmxlcy4NCg0KIyMjIyBTdGFuZGFyZGl6ZSBDb250aW51b3VzIHZhcmlhYmxlcw0KDQoNCiMjIyMgT25lLUhvdCBFbmNvZGluZw0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQpUbyBEby0NCiAgMS4gIE1pc3NpbmcgVmFsdWUgVHJlYXRtZW50DQogIDIuICBPdXRsaWVyIFRyZWF0bWVudA0KICAzLiAgU3RhbmRhcmRpemUgY29udGludW91cyB2YXJpYWJsZXMNCiAgNC4gIE9uZS1ob3QgZW5jb2RlIGNhdGVnb3JpY2FsIHZhcmlhYmxlcw0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgUHJlcGFyYXRpb24gYW5kIENsZWFuaW5nIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRSwgZWNobz1GQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoa25pdHIpDQpsaWJyYXJ5KGthYmxlRXh0cmEpDQpsaWJyYXJ5KG1sdG9vbHMpDQpsaWJyYXJ5KGdncGxvdDIpDQpsaWJyYXJ5KGRhdGEudGFibGUpDQpgYGANCg0KIyMjIyBMb2FkaW5nIERhdGENCg0KYGBge3J9DQpzcG90aWZ5LmRmLmZ1bGwgPSByZWFkLmNzdigiZGF0YS9TcG90aWZ5RmVhdHVyZXMuY3N2IikNCg0KYGBgDQoNCiMjIyMgQmFzaWMgRURBDQoNCmBgYHtyfQ0KcHJpbnQoIkRpbWVuc2lvbiIpDQpwcmludChkaW0oc3BvdGlmeS5kZi5mdWxsKSkNCg0KIyBSZW5hbWluZyBnZW5yZSBjb2x1bW4NCmNvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbClbY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKSA9PSAiw68uLmdlbnJlIl0gPC0gImdlbnJlIg0KDQpwcmludCgiQ29sdW1ucyIpDQpwcmludChjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpKQ0KYGBgDQoNCiMjIyMgU3VtbWFyeSANCg0KYGBge3J9DQpzdW1tYXJ5KHNwb3RpZnkuZGYuZnVsbCkNCmBgYA0KDQpEZXBlbmRlbnQgVmFyaWFibGU6IHBvcHVsYXJpdHkNCkNvbnRpbm91b3MgVmFyaWFibGVzOiBWYWxlbmNlLCBUZW1wbywgU3BlZWNoaW5lc3MsIExvdWRuZXNzLCBMaXZlbmVzcywgSW50cnVtZW50YWxuZXNzLCBFbmVyZ3ksIER1cmF0aW9uLCBEYW5jaWJpbGl0eSwgQWNvdXN0aWNuZXNzICgxMCkNCkNhdGVnb3JpY2FsIFZhcmlhYmxlczogVGltZSBTaWduYXR1cmUsIE1vZGUsIEtleSwgR2VucmUgKDEwKQ0KVW5pcXVlIElkZW50aWZpZXI6IFRyYWNrIElEDQpPdGhlciBWYXJpYWJsZXM6QXJ0aXN0IE5hbWUsIFRyYWNrIE5hbWUNCg0KYGBge3J9DQojIENhdGVnb3JpY2FsIGFuZCBDb250aW51b3VzIHZhcmlhYmxlcyBsaXN0DQpjYXRlZ29yaWNhbC52YXJzID0gYygidGltZV9zaWduYXR1cmUiLCAibW9kZSIsICJrZXkiLCAiZ2VucmUiKQ0KcHJpbnQoY2F0ZWdvcmljYWwudmFycykNCnVuaXF1ZS5pZGVudGlmaWVyID0gYygidHJhY2tfaWQiKQ0KcHJpbnQodW5pcXVlLmlkZW50aWZpZXIpDQpvdGhlci52YXJzID0gYygidHJhY2tfbmFtZSIsICJhcnRpc3RfbmFtZSIpDQpwcmludChvdGhlci52YXJzKQ0KZGVwZW5kZW50LnZhciA9IGMoInBvcHVsYXJpdHkiKQ0KcHJpbnQoZGVwZW5kZW50LnZhcikNCmNvbnRpbnVvdXMudmFycyA9IGMoInZhbGVuY2UiLCAidGVtcG8iLCAic3BlZWNoaW5lc3MiLCAibG91ZG5lc3MiLCAibGl2ZW5lc3MiLCAiaW5zdHJ1bWVudGFsbmVzcyIsICJlbmVyZ3kiLCAiZHVyYXRpb25fbXMiLCAiZGFuY2VhYmlsaXR5IiwgImFjb3VzdGljbmVzcyIpDQpwcmludChjb250aW51b3VzLnZhcnMpDQpgYGANCg0KDQojIyMjIERpc3RpbmN0IFZhbHVlcyBmb3IgY2F0ZWdvcmljYWwgdmFyaWFibGVzDQoNCmBgYHtyfQ0KcHJpbnQoIkdlbnJlIikNCnByaW50KGxlbmd0aCh1bmlxdWUoc3BvdGlmeS5kZi5mdWxsJGdlbnJlKSkpDQp0YWJsZShzcG90aWZ5LmRmLmZ1bGwkZ2VucmUpDQoNCnByaW50KCJUaW1lIFNpZ25hdHVyZSIpDQp0YWJsZShzcG90aWZ5LmRmLmZ1bGwkdGltZV9zaWduYXR1cmUpDQoNCnByaW50KCJNb2RlIikNCnRhYmxlKHNwb3RpZnkuZGYuZnVsbCRtb2RlKQ0KDQpwcmludCgiS2V5IikNCnByaW50KGxlbmd0aCh1bmlxdWUoc3BvdGlmeS5kZi5mdWxsJGtleSkpKQ0KdGFibGUoc3BvdGlmeS5kZi5mdWxsJGtleSkNCmBgYA0KDQoNCiMjIyMgQ2hlY2tpbmcgbnVtYmVyIG9mIG1pc3NpbmcgdmFsdWVzDQpgYGB7cn0NCmNvbFN1bXMoaXMubmEoc3BvdGlmeS5kZi5mdWxsKSkNCmBgYA0KDQpObyBtaXNzaW5nIHZhbHVlcyBpbiB0aGUgZGF0YXNldA0KDQojIyMjIE91dGxpZXIgVHJlYXRtZW50DQoNCmBgYHtyIGVjaG89RkFMU0V9DQojIENoZWNraW5nIG51bWJlciBvZiBvdXRsaWVycyBmb3IgY29udGludW91cyB2YXJpYWJsZXMNCm91dGxpZXJzID0gdmVjdG9yKCkNCmZvciAoYyBpbiBjb250aW51b3VzLnZhcnMpIHsNCiAgbyA9IGxlbmd0aChib3hwbG90KHNwb3RpZnkuZGYuZnVsbCRjLCBwbG90ID0gRkFMU0UpJG91dCkNCiAgb3V0bGllcnMgPSBjKG91dGxpZXJzLCBvKQ0KfQ0KDQpvdXRsaWVyLmRmID0gZGF0YS5mcmFtZSgNCiAgY29sdW1uLm5hbWUgPSBjb250aW51b3VzLnZhcnMsDQogIG5vLm9mLm91dGxpZXJzID0gb3V0bGllcnMNCikNCg0KcHJpbnQob3V0bGllci5kZikNCg0KYGBgDQoNClRoZXJlZm9yZSwgb3V0bGllciB0cmVhbWVudCBpcyBub3QgbmVlZGVkIGFzIG51bWJlciBvZiBvdXRsaWVycyBpcyAwIGZvciBhbGwgdGhlIGNvbnRpbnVvdXMgdmFyaWFibGVzLg0KDQojIyMjIFN0YW5kYXJkaXplIENvbnRpbnVvdXMgdmFyaWFibGVzDQoNCmBgYHtyfQ0KY29udC52YXJzID0gY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKVtjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpICVpbiUgY29udGludW91cy52YXJzXQ0Kc3BvdGlmeS5kZi5mdWxsLmNvbnQgPSBzcG90aWZ5LmRmLmZ1bGxbLCBjb250aW51b3VzLnZhcnNdDQpzcG90aWZ5LmRmLmZ1bGwuY29udC5zY2FsZWQgPSBkYXRhLmZyYW1lKHNjYWxlKHNwb3RpZnkuZGYuZnVsbC5jb250KSkNCmBgYA0KDQoNCg0KIyMjIyBPbmUtSG90IEVuY29kaW5nDQoNCmBgYHtyfQ0KY2F0LnZhcnMgPSBjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpW2NvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbCkgJWluJSBjYXRlZ29yaWNhbC52YXJzXQ0Kc3BvdGlmeS5kZi5mdWxsLmNhdCA9IHNwb3RpZnkuZGYuZnVsbFssIGNhdC52YXJzXQ0Kc3BvdGlmeS5kZi5mdWxsLmNhdCA9IGRhdGEudGFibGUoc3BvdGlmeS5kZi5mdWxsLmNhdCkNCnNwb3RpZnkuZGYuZnVsbC5jYXQub25laG90ID0gb25lX2hvdChzcG90aWZ5LmRmLmZ1bGwuY2F0LCBjb2xzID0gImF1dG8iKQ0KYGBgDQoNCiMjIyMgT3RoZXIgVmFyaWFibGVzDQoNCmBgYHtyfQ0Kb3RoZXIudmFycyA9IGNvbG5hbWVzKHNwb3RpZnkuZGYuZnVsbClbY29sbmFtZXMoc3BvdGlmeS5kZi5mdWxsKSAlaW4lIG90aGVyLnZhcnNdDQpzcG90aWZ5LmRmLmZ1bGwub3RoZXIgPSBzcG90aWZ5LmRmLmZ1bGxbLCBvdGhlci52YXJzXQ0KYGBgDQoNCiMjIyMgRmluYWwgRGF0YXNldA0KDQpgYGB7cn0NCnNwb3RpZnkuZmluYWwuZGYgPSBjYmluZChzcG90aWZ5LmRmLmZ1bGwkdHJhY2tfaWQsIHNwb3RpZnkuZGYuZnVsbC5vdGhlciwgc3BvdGlmeS5kZi5mdWxsLmNvbnQuc2NhbGVkLCBzcG90aWZ5LmRmLmZ1bGwuY2F0Lm9uZWhvdCxzcG90aWZ5LmRmLmZ1bGwkcG9wdWxhcml0eSkNCmNvbG5hbWVzKHNwb3RpZnkuZmluYWwuZGYpID0gYygidHJhY2tfaWQiLCBjb2xuYW1lcyhzcG90aWZ5LmRmLmZ1bGwpWzI6NTldLCAicG9wdWxhcml0eSIpDQpgYGANCg0KYGBge3J9DQojIFdyaXRlIGRhdGFzZXQNCndyaXRlLmNzdihzcG90aWZ5LmZpbmFsLmRmLCAiZGF0YS9zcG90aWZ5LmRhdGFzZXQuZmluYWwuY3N2IikNCmBgYA0KDQoNCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NClRvIERvLQ0KICAxLiAgTWlzc2luZyBWYWx1ZSBUcmVhdG1lbnQNCiAgMi4gIE91dGxpZXIgVHJlYXRtZW50DQogIDMuICBTdGFuZGFyZGl6ZSBjb250aW51b3VzIHZhcmlhYmxlcw0KICA0LiAgT25lLWhvdCBlbmNvZGUgY2F0ZWdvcmljYWwgdmFyaWFibGVzDQo=</div>
 
 
 

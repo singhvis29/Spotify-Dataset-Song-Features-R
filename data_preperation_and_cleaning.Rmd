@@ -10,8 +10,10 @@ library(tidyverse)
 library(dplyr)
 library(knitr)
 library(kableExtra)
+library(mltools)
+library(ggplot2)
+library(data.table)
 ```
-
 
 #### Loading Data
 
@@ -55,7 +57,7 @@ other.vars = c("track_name", "artist_name")
 print(other.vars)
 dependent.var = c("popularity")
 print(dependent.var)
-continuous.vars = c("valence", "tempo", "speechiness", "loudness", "liveness", "instrumentalness", "energy", "duration", "dancibility", "acousticness")
+continuous.vars = c("valence", "tempo", "speechiness", "loudness", "liveness", "instrumentalness", "energy", "duration_ms", "danceability", "acousticness")
 print(continuous.vars)
 ```
 
@@ -109,8 +111,45 @@ Therefore, outlier treament is not needed as number of outliers is 0 for all the
 
 #### Standardize Continuous variables
 
+```{r}
+cont.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% continuous.vars]
+spotify.df.full.cont = spotify.df.full[, continuous.vars]
+spotify.df.full.cont.scaled = data.frame(scale(spotify.df.full.cont))
+```
+
+
 
 #### One-Hot Encoding
+
+```{r}
+cat.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% categorical.vars]
+spotify.df.full.cat = spotify.df.full[, cat.vars]
+spotify.df.full.cat = data.table(spotify.df.full.cat)
+spotify.df.full.cat.onehot = one_hot(spotify.df.full.cat, cols = "auto")
+```
+
+#### Other Variables
+
+```{r}
+other.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% other.vars]
+spotify.df.full.other = spotify.df.full[, other.vars]
+```
+
+#### Final Dataset
+
+```{r}
+spotify.final.df = cbind(spotify.df.full$track_id, spotify.df.full.other, spotify.df.full.cont.scaled, spotify.df.full.cat.onehot,spotify.df.full$popularity)
+colnames(spotify.final.df) = c("track_id", colnames(spotify.df.full)[2:59], "popularity")
+```
+
+```{r}
+# Write dataset
+write.csv(spotify.final.df, "data/spotify.dataset.final.csv")
+```
+
+
+
+
 
 ________________________________________________________________________________________________________________
 To Do-
