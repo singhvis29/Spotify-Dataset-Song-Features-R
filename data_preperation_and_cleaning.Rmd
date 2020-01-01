@@ -1,0 +1,120 @@
+---
+title: "Data Preparation and Cleaning"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+```
+
+
+#### Loading Data
+
+```{r}
+spotify.df.full = read.csv("data/SpotifyFeatures.csv")
+
+```
+
+#### Basic EDA
+
+```{r}
+print("Dimension")
+print(dim(spotify.df.full))
+
+# Renaming genre column
+colnames(spotify.df.full)[colnames(spotify.df.full) == "ï..genre"] <- "genre"
+
+print("Columns")
+print(colnames(spotify.df.full))
+```
+
+#### Summary 
+
+```{r}
+summary(spotify.df.full)
+```
+
+Dependent Variable: popularity
+Continouos Variables: Valence, Tempo, Speechiness, Loudness, Liveness, Intrumentalness, Energy, Duration, Dancibility, Acousticness (10)
+Categorical Variables: Time Signature, Mode, Key, Genre (10)
+Unique Identifier: Track ID
+Other Variables:Artist Name, Track Name
+
+```{r}
+# Categorical and Continuous variables list
+categorical.vars = c("time_signature", "mode", "key", "genre")
+print(categorical.vars)
+unique.identifier = c("track_id")
+print(unique.identifier)
+other.vars = c("track_name", "artist_name")
+print(other.vars)
+dependent.var = c("popularity")
+print(dependent.var)
+continuous.vars = c("valence", "tempo", "speechiness", "loudness", "liveness", "instrumentalness", "energy", "duration", "dancibility", "acousticness")
+print(continuous.vars)
+```
+
+
+#### Distinct Values for categorical variables
+
+```{r}
+print("Genre")
+print(length(unique(spotify.df.full$genre)))
+table(spotify.df.full$genre)
+
+print("Time Signature")
+table(spotify.df.full$time_signature)
+
+print("Mode")
+table(spotify.df.full$mode)
+
+print("Key")
+print(length(unique(spotify.df.full$key)))
+table(spotify.df.full$key)
+```
+
+
+#### Checking number of missing values
+```{r}
+colSums(is.na(spotify.df.full))
+```
+
+No missing values in the dataset
+
+#### Outlier Treatment
+
+```{r echo=FALSE}
+# Checking number of outliers for continuous variables
+outliers = vector()
+for (c in continuous.vars) {
+  o = length(boxplot(spotify.df.full$c, plot = FALSE)$out)
+  outliers = c(outliers, o)
+}
+
+outlier.df = data.frame(
+  column.name = continuous.vars,
+  no.of.outliers = outliers
+)
+
+print(outlier.df)
+
+```
+
+Therefore, outlier treament is not needed as number of outliers is 0 for all the continuous variables.
+
+#### Standardize Continuous variables
+
+
+#### One-Hot Encoding
+
+________________________________________________________________________________________________________________
+To Do-
+  1.  Missing Value Treatment
+  2.  Outlier Treatment
+  3.  Standardize continuous variables
+  4.  One-hot encode categorical variables
