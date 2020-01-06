@@ -10,10 +10,111 @@ library(tidyverse)
 library(dplyr)
 library(knitr)
 library(kableExtra)
+library(caTools)
 ```
 
 #### Loading Data
+
 ```{r}
+spotify.final.df = read.csv("data/spotify.dataset.final.csv")
+spotify.final.df = spotify.final.df[, !colnames(spotify.final.df) %in% "X"]
+```
+
+```{r}
+print(dim(spotify.final.df))
+print(colnames(spotify.final.df))
+```
+
+```{r}
+# Create a dataset for building models
+non.model.vars = c("track_id", "artist_name", "track_name")
+spotify.model.df = spotify.final.df[, !colnames(spotify.final.df) %in% non.model.vars]
+```
+
+```{r}
+# Dividing data into test and train
+set.seed(123)
+sample = sample.split(spotify.model.df, SplitRatio = 0.75)
+spotify.model.df.train = subset(spotify.df.model, sample == TRUE)
+spotify.model.df.test = subset(spotify.df.model, sample == FALSE)
+```
+
+#### Fitting a linear model
+
+```{r}
+# Fitting a linear model
+fit1 = lm(popularity ~ ., data = spotify.model.df.train)
+summary(fit1)
+```
+
+Few coefficients are not defined, variables - time_signature_5.4, mode_Minor, key_G., genre_World 
+Few of the key, time signature variables are not significant. genre_World is also not significant
+
+```{r}
+# Checking correlation of "time_signature_5.4" variable with other variables
+cor.time_signature_5.4 = cor(spotify.model.df[, !colnames(spotify.model.df) %in% "time_signature_5.4"], spotify.model.df$time_signature_5.4)
+print(cor.time_signature_5.4[cor.time_signature_5.4 %in% cor.time_signature_5.4[abs(cor.time_signature_5.4) > 0.3]])
+```
+
+```{r}
+# Checking correlation of "mode_Minor" variable with other variables
+cor.mode_Minor = cor(spotify.model.df[, !colnames(spotify.model.df) %in% "mode_Minor"], spotify.model.df$mode_Minor)
+print(cor.mode_Minor[cor.mode_Minor %in% cor.mode_Minor[abs(cor.mode_Minor) > 0.3]])
 
 ```
+
+```{r}
+names(fit1)
+```
+
+#### Model Evaluation on test data
+
+```{r}
+# Model Evaluation on test data
+test.pred.fit1 = predict(fit1, spotify.df.model.test)
+
+print("RMSE")
+print(rmse(test.pred.fit1, spotify.df.model.test$popularity))
+
+rsquared <- function(predicted.vals, actual.val) {
+  SS.total = sum((actual.val - mean(actual.val))^2)
+  SS.residual = sum((actual.val - predicted.vals)^2)
+  
+  test.r2 = 1 - (SS.residual/SS.total)
+  return(test.r2)
+}
+
+print("R-Squared")
+print(rsquared(test.pred.fit1, spotify.df.model.test$popularity))
+
+```
+
+```{r}
+plot(fit1)
+```
+
+```{r}
+# Create a dataset without 'genre' variables
+spotify.df.model.train.wo.genre = spotify.df.model.train[,-grep("genre", colnames(spotify.df.model.train))]
+spotify.df.model.test.wo.genre = spotify.df.model.test[,-grep("genre", colnames(spotify.df.model.test))]
+```
+
+#### Fitting a linear model without genre variable
+
+```{r}
+# Fitting a linear model without genre variable
+fit2 = lm(popularity ~ ., data = spotify.df.model.train.wo.genre)
+summary(fit2)
+```
+
+Low R-Squared value, therefore, no further investigation will be performed.
+
+#### Fitting a linear model with interaction with duration
+
+```{r}
+fit3 = lm(popularity~.*duration_ms, data = spotify.df.model.train)
+summary(fit3)
+```
+
+Not much improvement in R-Squared value, therefore, no further investigation will be performed.
 

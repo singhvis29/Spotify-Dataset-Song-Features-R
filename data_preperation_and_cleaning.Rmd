@@ -29,7 +29,7 @@ print("Dimension")
 print(dim(spotify.df.full))
 
 # Renaming genre column
-colnames(spotify.df.full)[colnames(spotify.df.full) == "Ã¯..genre"] <- "genre"
+colnames(spotify.df.full)[colnames(spotify.df.full) == "ï..genre"] <- "genre"
 
 print("Columns")
 print(colnames(spotify.df.full))
@@ -125,7 +125,7 @@ spotify.df.full.cont.scaled = data.frame(scale(spotify.df.full.cont))
 cat.vars = colnames(spotify.df.full)[colnames(spotify.df.full) %in% categorical.vars]
 spotify.df.full.cat = spotify.df.full[, cat.vars]
 spotify.df.full.cat = data.table(spotify.df.full.cat)
-spotify.df.full.cat.onehot = one_hot(spotify.df.full.cat, cols = "auto")
+spotify.df.full.cat.onehot = one_hot(spotify.df.full.cat, cols = "auto", dropUnusedLevels = FALSE)
 ```
 
 #### Other Variables
@@ -139,21 +139,13 @@ spotify.df.full.other = spotify.df.full[, other.vars]
 
 ```{r}
 spotify.final.df = cbind(spotify.df.full$track_id, spotify.df.full.other, spotify.df.full.cont.scaled, spotify.df.full.cat.onehot,spotify.df.full$popularity)
-colnames(spotify.final.df) = c("track_id", colnames(spotify.df.full)[2:59], "popularity")
+colnames(spotify.final.df) = c("track_id", colnames(spotify.final.df)[2:59], "popularity")
 ```
 
 ```{r}
 # Write dataset
-write.csv(spotify.final.df, "data/spotify.dataset.final.csv")
+write.csv(spotify.final.df, "data/spotify.dataset.final.csv", row.names = FALSE)
 ```
 
 
 
-
-
-________________________________________________________________________________________________________________
-To Do-
-  1.  Missing Value Treatment
-  2.  Outlier Treatment
-  3.  Standardize continuous variables
-  4.  One-hot encode categorical variables
